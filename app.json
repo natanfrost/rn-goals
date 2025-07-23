@@ -7,6 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "rnmaximilian",
     "userInterfaceStyle": "automatic",
+    "backgroundColor": "#1e085a",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true

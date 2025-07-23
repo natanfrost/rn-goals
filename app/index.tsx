@@ -1,7 +1,7 @@
 import GoalInput from "@/components/GoalInput";
 import GoalItem from "@/components/GoalItem";
 import { useState } from "react";
-import { Button, FlatList, StyleSheet, View } from "react-native";
+import { Button, FlatList, StatusBar, StyleSheet, View } from "react-native";
 
 interface Goal {
   id: string;
@@ -16,9 +16,14 @@ export default function HomeScreen() {
     setGoalModalVisible(true);
   };
 
+  const handleCloseGoalModal = () => {
+    setGoalModalVisible(false);
+  };
+
   const handleAddGoal = (goal: string) => {
     const newGoal: Goal = { id: Math.random().toString(), title: goal };
     setGoals((prevGoals) => [...prevGoals, newGoal]);
+    setGoalModalVisible(false);
   };
 
   const handleDeleteGoal = (id: string) => {
@@ -26,31 +31,41 @@ export default function HomeScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Button
-        title="Add new goal"
-        color="#5e0acc"
-        onPress={handleOpenGoalModal}
-      />
-      <GoalInput open={goalModalVisible} onAddGoal={handleAddGoal} />
-      <View>
-        <FlatList
-          data={goals}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <GoalItem item={{ ...item, onDeleteItem: handleDeleteGoal }} />
-          )}
+    <>
+      <StatusBar barStyle="light-content" />
+      <View style={styles.container}>
+        <Button
+          title="Add new goal"
+          color="#a870f1"
+          onPress={handleOpenGoalModal}
         />
+        <GoalInput
+          open={goalModalVisible}
+          onAddGoal={handleAddGoal}
+          onCancel={handleCloseGoalModal}
+        />
+        <View style={styles.goalsContainer}>
+          <FlatList
+            data={goals}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <GoalItem item={{ ...item, onDeleteItem: handleDeleteGoal }} />
+            )}
+          />
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
+    paddingTop: 48,
+    paddingHorizontal: 16,
+    backgroundColor: "#1e085a",
+  },
+  goalsContainer: {
+    flex: 5,
   },
 });
